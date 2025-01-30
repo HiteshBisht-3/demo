@@ -7,11 +7,10 @@ gem "propshaft"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
 
-#postgres db support
-gem 'pg'
+
 #user auth
 gem 'devise'
-
+gem 'carrierwave'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -35,6 +34,9 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+
+
+gem "figaro"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
