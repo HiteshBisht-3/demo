@@ -1,0 +1,22 @@
+<%= @post.caption %><br>
+<%= link_to 'Delete Post', @post, method: :delete, data: {turbo_method: :delete} %>
+
+<%= form_with(model: [ @post, @post.comments.build ], local: true) do |form| %>
+  <div>
+    <%= form.label :content, "Comment" %>
+    <%= form.text_field :content %>
+  </div>
+  <div>
+    <%= form.submit 'Post Comment' %>
+  </div>
+<% end %>
+
+<h3>Comments:</h3>
+<ul>
+  <% @post.comments.each do |comment| %>
+    <li>
+      <%= comment.content %>
+      <%= link_to 'Delete Comment', [@post, comment], method: :delete,data: {turbo_method: :delete} %>
+    </li>
+  <% end %>
+</ul>
