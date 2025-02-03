@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_31_130807) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_03_085620) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -41,19 +41,32 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_31_130807) do
 
   create_table "comments", force: :cascade do |t|
     t.string "content"
-    t.string "commentable_type"
-    t.integer "commentable_id"
+    t.integer "user_id"
+    t.integer "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "friend_requests", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "receiver_id", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["receiver_id"], name: "index_friend_requests_on_receiver_id"
+    t.index ["sender_id"], name: "index_friend_requests_on_sender_id"
   end
 
   create_table "likes", force: :cascade do |t|
-    t.string "likeable_type"
-    t.integer "likeable_id"
+    t.integer "user_id"
+    t.integer "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["post_id"], name: "index_likes_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -86,4 +99,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_31_130807) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "friend_requests", "users", column: "receiver_id"
+  add_foreign_key "friend_requests", "users", column: "sender_id"
 end

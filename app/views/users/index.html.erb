@@ -1,1 +1,50 @@
-Welcome
+<div class="container mx-auto p-6">
+  <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Instagram Feed</h2>
+
+  <% @users.each do |user| %>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+      <div class="border-b p-4 flex items-center space-x-4">
+        <!-- User profile picture and name -->
+        <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+        <h3 class="text-xl font-semibold text-gray-800"><%= user.email %></h3>
+      </div>
+
+      <% if user.posts.any? %>
+        <div class="space-y-8">
+          <% user.posts.each do |post| %>
+            <div class="bg-gray-100 p-4 rounded-md shadow-md">
+              <% if post.image.attached? %>
+                <!-- Post image with responsive design -->
+                <div class="relative">
+                  <img src="<%= url_for(post.image) %>" alt="Post Image" class="w-full h-80 object-cover rounded-lg mb-4">
+                </div>
+              <% end %>
+
+              <!-- Post caption and details -->
+              <h4 class="text-lg font-medium text-gray-800 mb-2"><%= post.caption %></h4>
+              <p class="text-sm text-gray-500 mb-4">Posted on: <%= post.created_at.strftime("%B %d, %Y") %></p>
+
+              <div class="mt-4">
+                <h5 class="text-md font-semibold text-gray-700">Comments:</h5>
+                <% if post.comments.any? %>
+                  <ul class="mt-2 space-y-3">
+                    <% post.comments.each do |comment| %>
+                      <li class="bg-white p-3 rounded-md shadow-sm border">
+                        <p class="text-gray-800 text-sm"><%= comment.content %></p>
+                        <p class="text-xs text-gray-500 mt-1">By <%= comment.user.email %> on <%= comment.created_at.strftime("%B %d, %Y") %></p>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  <p class="text-gray-500 text-sm">No comments yet.</p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 text-sm mb-4">No posts available.</p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

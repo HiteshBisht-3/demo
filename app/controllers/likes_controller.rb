@@ -2,7 +2,12 @@ class LikesController < ApplicationController
   before_action :find_post
 
   def create
-    @like = @post.likes.create(user: current_user)
+    @like = @post.likes.find_by(user: current_user)
+    if @like
+      @like.destroy
+    else
+      @post.likes.create(user: current_user)
+    end
     redirect_to @post
   end
 

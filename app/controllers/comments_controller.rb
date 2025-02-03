@@ -1,6 +1,10 @@
 class CommentsController < ApplicationController
   before_action :set_post
 
+  def index
+    @comments = @post.comments
+  end
+
   def create
     @comment = @post.comments.new(comment_params)
     @comment.user = current_user
