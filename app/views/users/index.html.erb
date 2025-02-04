@@ -2,14 +2,15 @@
   <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Instagram Feed</h2>
 
   <% @users.each do |user| %>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
-      <div class="border-b p-4 flex items-center space-x-4">
-        <!-- User profile picture and name -->
-        <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
-        <h3 class="text-xl font-semibold text-gray-800"><%= user.email %></h3>
-      </div>
+    <% # Check if the user has any posts before displaying their information %>
+    <% if user.posts.any? %>
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+        <div class="border-b p-4 flex items-center space-x-4">
+          <!-- User profile picture and name -->
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <h3 class="text-xl font-semibold text-gray-800"><%= user.email %></h3>
+        </div>
 
-      <% if user.posts.any? %>
         <div class="space-y-8">
           <% user.posts.each do |post| %>
             <div class="bg-gray-100 p-4 rounded-md shadow-md">
@@ -42,9 +43,7 @@
             </div>
           <% end %>
         </div>
-      <% else %>
-        <p class="text-gray-500 text-sm mb-4">No posts available.</p>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   <% end %>
 </div>

@@ -1,62 +1,75 @@
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'space-y-6' }) do |f| %>
+  <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-8 space-y-6">
 
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'space-y-4' }) do |f| %>
-        <%= render "devise/shared/error_messages", resource: resource %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-            <%= f.label :email %>
-          </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" autofocus="autofocus" autocomplete="email" name="user[email]" value="<%= resource.email %>">
-        </div>
+    <!-- Email Field -->
+    <div class="form-group">
+      <%= f.label :email, class: "text-gray-700 text-sm font-semibold mb-2" %>
+      <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="email" id="email" name="user[email]" value="<%= resource.email %>" autofocus autocomplete="email">
+    </div>
 
-        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-          <div class="text-sm text-gray-600">
-            Currently waiting confirmation for: <%= resource.unconfirmed_email %>
-          </div>
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div class="text-sm text-gray-600 mt-2">
+        Currently waiting confirmation for: <%= resource.unconfirmed_email %>
+      </div>
+    <% end %>
+
+    <!-- Username Field -->
+    <div class="form-group">
+      <%= f.label :username, class: "text-gray-700 text-sm font-semibold mb-2" %>
+      <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" id="username" name="user[username]" value="<%= resource.username %>">
+    </div>
+
+    <!-- Bio Field -->
+    <div class="form-group">
+      <%= f.label :bio, class: "text-gray-700 text-sm font-semibold mb-2" %>
+      <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="bio" name="user[bio]"><%= resource.bio %></textarea>
+    </div>
+
+    <!-- Password Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= f.label :password, class: "text-gray-700 text-sm font-semibold mb-2" %> 
+        <i class="text-xs text-gray-500">(leave blank if you don't want to change it)</i>
+        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" id="password" name="user[password]" autocomplete="new-password">
+        <% if @minimum_password_length %>
+          <p class="text-xs text-gray-500 mt-1"><%= @minimum_password_length %> characters minimum</p>
         <% end %>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-            <%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
-          </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" autocomplete="new-password" name="user[password]">
-          <% if @minimum_password_length %>
-            <p class="text-xs text-gray-500 mt-1">
-              <%= @minimum_password_length %> characters minimum
-            </p>
-          <% end %>
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="password_confirmation">
-            <%= f.label :password_confirmation %>
-          </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password_confirmation" type="password" autocomplete="new-password" name="user[password_confirmation]">
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="current_password">
-            <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
-          </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="current_password" type="password" autocomplete="current-password" name="user[current_password]">
-        </div>
-
-        <div class="flex items-center justify-between">
-          <%= f.submit "Update", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
-        </div>
-      <% end %>
-
-      <h3 class="text-xl font-bold mt-8">Cancel my account</h3>
-
-      <div class="text-sm">
-        Unhappy? 
-        <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
       </div>
 
-      <div class="mt-4">
-        <%= link_to "Back", :back, class: "text-blue-500 hover:text-blue-700" %>
+      <div>
+        <%= f.label :password_confirmation, class: "text-gray-700 text-sm font-semibold mb-2" %>
+        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" id="password_confirmation" name="user[password_confirmation]" autocomplete="new-password">
+      </div>
+    </div>
+
+    <!-- Current Password -->
+    <div class="form-group">
+      <%= f.label :current_password, class: "text-gray-700 text-sm font-semibold mb-2" %>
+      <i class="text-xs text-gray-500">(we need your current password to confirm your changes)</i>
+      <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" id="current_password" name="user[current_password]" autocomplete="current-password">
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-between items-center mt-6">
+      <!-- Update Button -->
+      <div>
+        <%= f.submit "Update", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+
+      <!-- Back Link -->
+      <div>
+        <%= link_to "Back", :back, class: "text-blue-500 hover:text-blue-700 py-3 px-6 rounded-lg" %>
       </div>
     </div>
   </div>
-</body>
-</html>
+
+<% end %>
+
+<!-- Cancel Account Section -->
+<div class="max-w-2xl mx-auto mt-8 bg-red-50 p-6 rounded-lg shadow-lg">
+  <div class="text-sm text-gray-700">
+    <%= button_to "Delete account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" %>
+  </div>
+</div>
