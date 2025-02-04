@@ -22,24 +22,6 @@
   <% else %>
     <p class="text-center text-gray-500">No friend requests at the moment.</p>
   <% end %>
-
-  <% if @send_friends.any? %>
-    <div class="max-w-2xl mx-auto mb-8">
-      <h3 class="text-2xl font-semibold text-gray-700 mb-4">Sent Friend Requests</h3>
-      <% @send_friends.each do |friend| %>
-        <div class="bg-white shadow-md rounded-lg p-4 mb-4 flex justify-between items-center">
-          <div class="flex items-center">
-            <div class="mr-4 font-semibold text-lg text-gray-700">
-              <%= friend.receiver.username %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <p class="text-center text-gray-500">You have not sent any friend requests.</p>
-  <% end %>
-
   <% if @receive_friends.any? %>
     <div class="max-w-2xl mx-auto mb-8">
       <h3 class="text-2xl font-semibold text-gray-700 mb-4">Friends</h3>
@@ -53,7 +35,21 @@
         </div>
       <% end %>
     </div>
-  <% else %>
+  <% elsif @send_friends.any?%>
+   <div class="max-w-2xl mx-auto mb-8">
+      <h3 class="text-2xl font-semibold text-gray-700 mb-4">Friends</h3>
+      <% @send_friends.each do |friend| %>
+        <div class="bg-white shadow-md rounded-lg p-4 mb-4 flex justify-between items-center">
+          <div class="flex items-center">
+            <div class="mr-4 font-semibold text-lg text-gray-700">
+              <%= friend.receiver.username %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <%else%>
+
     <p class="text-center text-gray-500">You have no accepted friends yet.</p>
   <% end %>
 </div>

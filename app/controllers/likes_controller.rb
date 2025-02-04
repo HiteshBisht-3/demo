@@ -1,6 +1,5 @@
 class LikesController < ApplicationController
   before_action :find_post
-
   def create
     @like = @post.likes.find_by(user: current_user)
     if @like
