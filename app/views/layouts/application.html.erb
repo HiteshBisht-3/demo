@@ -23,15 +23,17 @@
     <%= javascript_importmap_tags %>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
+<% if user_signed_in? %>
 <body class="bg-gray-100">
   <nav class="bg-gray-900 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
       <%= link_to 'Instagram', root_path, class: "text-xl font-bold" %>
-      <div class="flex space-x-4"> <!-- Make this a flex container for horizontal alignment -->
-        <a href="/" class="hover:text-gray-300">Home</a>
-        <% if user_signed_in? %>
-          <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'hover:text-gray-300' %>
+      <div class="flex space-x-4">
+          <a href="/" class="hover:text-gray-300">Home</a>
+          <a href="<%= friend_requests_user_path(current_user.id) %>" class="hover:text-gray-300">Friends</a>
           <a href="<%= profile_path(current_user.id) %>" class="hover:text-gray-300">Profile</a>
+          <a href="<%= user_path(current_user.id) %>" class="hover:text-gray-300">Search</a>
+          <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'hover:text-gray-300' %>
         <%end%>
       </div>
     </div>

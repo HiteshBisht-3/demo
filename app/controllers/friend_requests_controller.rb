@@ -3,33 +3,30 @@ class FriendRequestsController < ApplicationController
 
   def create
     @friend_request = current_user.sent_friend_requests.build(friend_request_params)
-    
     if @friend_request.save
-      redirect_to request.referrer, notice: 'Friend request sent successfully!'
+      redirect_to request.referrer
     else
-      redirect_to request.referrer, alert: 'Failed to send friend request.'
+      redirect_to request.referrer
     end
   end
 
   def accept
     @friend_request = FriendRequest.find(params[:id])
-    
     if @friend_request.receiver == current_user
       @friend_request.update(status: :accepted)
-      redirect_to friend_requests_user_path(current_user), notice: 'Friend request accepted!'
+      redirect_to friend_requests_user_path(current_user)
     else
-      redirect_to friend_requests_user_path(current_user), alert: 'Unauthorized action.'
+      redirect_to friend_requests_user_path(current_user)
     end
   end
 
   def destroy
     @friend_request = FriendRequest.find(params[:id])
-    
     if @friend_request.receiver == current_user
       @friend_request.destroy
-      redirect_to user_friend_requests_path(current_user), notice: 'Friend request rejected.'
+      redirect_to user_friend_requests_path(current_user)
     else
-      redirect_to user_friend_requests_path(current_user), alert: 'Unauthorized action.'
+      redirect_to user_friend_requests_path(current_user)
     end
   end
 

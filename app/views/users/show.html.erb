@@ -14,23 +14,23 @@
     <h2 class="text-xl font-bold my-4">Results</h2>
     <ul class="list-none">
       <% @users.each do |user| %>
-        <li class="bg-gray-100 p-2 rounded mb-2 flex justify-between items-center">
-          <%= user.username %>
-          <%= form_with(model: @friend_request, local: true) do |f| %>
-            <%= f.hidden_field :receiver_id, value: user.id %>
-            
-            <% # Check if a friend request already exists %>
-            <% existing_request = FriendRequest.find_by(
-                 sender: current_user, 
-                 receiver: user, 
-                 status: [:pending, :accepted]
-               ) %>
-            
-            <%= f.submit existing_request ? "Request Sent" : "Send Request", 
-                class: "px-4 py-2 #{existing_request ? 'bg-gray-500' : 'bg-blue-600'} text-white rounded-md hover:bg-opacity-90",
-                disabled: !!existing_request %>
-          <% end %>
-        </li>
+        <% if user.username.present? %>
+          <li class="bg-gray-100 p-2 rounded mb-2 flex justify-between items-center">
+            <strong> <%= link_to user.username, profile_path(user) %></strong>
+            <%= form_with(model: @friend_request, local: true) do |f| %>
+              <%= f.hidden_field :receiver_id, value: user.id %>  
+              <% existing_request = FriendRequest.find_by(
+                   sender: current_user, 
+                   receiver: user, 
+                   status: [:pending, :accepted]
+                 ) %>
+              
+              <%= f.submit existing_request ? "Request Sent" : "Send Request", 
+                  class: "px-4 py-2 #{existing_request ? 'bg-gray-500' : 'bg-blue-600'} text-white rounded-md hover:bg-opacity-90",
+                  disabled: !!existing_request %>
+            <% end %>
+          </li>
+        <% end %>
       <% end %>
     </ul>
   <% else %>

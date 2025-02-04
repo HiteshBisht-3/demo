@@ -10,8 +10,8 @@ gem "sqlite3", ">= 2.1"
 
 #user auth
 gem 'devise'
-gem 'carrierwave'
 
+gem 'rubocop'
 gem 'ransack'
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -37,7 +37,6 @@ gem "solid_cable"
 
 
 gem 'byebug'
-gem "figaro"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 

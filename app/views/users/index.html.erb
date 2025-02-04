@@ -1,44 +1,89 @@
-<div class="container mx-auto p-6">
-  <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Instagram Feed</h2>
-
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl">
+  <h2 class="text-4xl font-extrabold mb-12 text-center text-gray-900 tracking-tight">Instagram Feed</h2>
+  
   <% @users.each do |user| %>
-    <% # Check if the user has any posts before displaying their information %>
     <% if user.posts.any? %>
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
-        <div class="border-b p-4 flex items-center space-x-4">
-          <!-- User profile picture and name -->
-          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
-          <h3 class="text-xl font-semibold text-gray-800"><%= user.email %></h3>
+      <div class="bg-white shadow-xl rounded-xl overflow-hidden mb-10 transition-all duration-300 hover:shadow-2xl">
+        <div class="border-b p-4 flex items-center space-x-4 bg-gradient-to-r from-purple-50 to-pink-50">
+          <div class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-purple-200 ring-offset-2">
+            <div class="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+              <span class="text-white font-bold text-lg">
+                <%= user.email[0].upcase %>
+              </span>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900"><%= user.email %></h3>
+            <p class="text-sm text-gray-500">@<%= user.email.split('@')[0] %></p>
+          </div>
         </div>
 
-        <div class="space-y-8">
+        <div class="space-y-10 p-2">
           <% user.posts.each do |post| %>
-            <div class="bg-gray-100 p-4 rounded-md shadow-md">
+            <div class="bg-white rounded-lg overflow-hidden">
               <% if post.image.attached? %>
-                <!-- Post image with responsive design -->
-                <div class="relative">
-                  <img src="<%= url_for(post.image) %>" alt="Post Image" class="w-full h-80 object-cover rounded-lg mb-4">
+                <div class="relative aspect-w-16 aspect-h-12 bg-gray-100">
+                  <%= image_tag url_for(post.image),
+                      class: "w-full h-full object-cover transition-transform duration-300 hover:scale-95",
+                      loading: "lazy",
+                      alt: "Post by #{user.email}" %>
                 </div>
               <% end %>
 
-              <!-- Post caption and details -->
-              <h4 class="text-lg font-medium text-gray-800 mb-2"><%= post.caption %></h4>
-              <p class="text-sm text-gray-500 mb-4">Posted on: <%= post.created_at.strftime("%B %d, %Y") %></p>
+              <div class="p-6">
+                <h4 class="text-xl font-medium text-gray-900 mb-3"><%= post.caption %></h4>
+                <p class="text-sm text-gray-500 mb-6 flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <%= post.created_at.strftime("%B %d, %Y") %>
+                </p>
 
-              <div class="mt-4">
-                <h5 class="text-md font-semibold text-gray-700">Comments:</h5>
-                <% if post.comments.any? %>
-                  <ul class="mt-2 space-y-3">
-                    <% post.comments.each do |comment| %>
-                      <li class="bg-white p-3 rounded-md shadow-sm border">
-                        <p class="text-gray-800 text-sm"><%= comment.content %></p>
-                        <p class="text-xs text-gray-500 mt-1">By <%= comment.user.email %> on <%= comment.created_at.strftime("%B %d, %Y") %></p>
-                      </li>
-                    <% end %>
-                  </ul>
-                <% else %>
-                  <p class="text-gray-500 text-sm">No comments yet.</p>
+                <%= form_with url: post_likes_path(post), method: :post, local: true,
+                    class: "inline-block" do %>
+                  <button type="submit" 
+                          class="group flex items-center space-x-2 text-gray-500 hover:text-red-500 transition-colors duration-200">
+                    <svg class="w-7 h-7 transform group-hover:scale-110 transition-transform duration-200" 
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    <span class="font-medium">
+                      <%= post.like_count %> Like<%= 's' if post.like_count != 1 %>
+                    </span>
+                  </button>
                 <% end %>
+                <div class="mt-8">
+                  <h5 class="text-lg font-semibold text-gray-900 mb-4">Comments</h5>
+                  <% if post.comments.any? %>
+                    <ul class="space-y-4">
+                      <% post.comments.each do |comment| %>
+                        <li class="bg-gray-50 p-4 rounded-lg">
+                          <p class="text-gray-800 mb-2"><%= comment.content %></p>
+                          <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <span class="font-medium"><%= comment.user.email.split('@')[0] %></span>
+                            <span>•</span>
+                            <span><%= comment.created_at.strftime("%B %d, %Y") %></span>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                  <% else %>
+                    <p class="text-gray-500 italic">No comments yet. Be the first to comment!</p>
+                  <% end %>
+
+                  <%= form_with(model: [post, Comment.new], local: true, class: "mt-6") do |f| %>
+                    <div class="flex items-start space-x-3">
+                      <%= f.text_area :content,
+                          class: "flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none transition-shadow duration-200",
+                          placeholder: "Add your thoughts...",
+                          rows: 2 %>
+                      <%= f.submit "Post", 
+                          class: "px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-lg hover:from-purple-700 hover:to-pink-700 focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200" %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
             </div>
           <% end %>
