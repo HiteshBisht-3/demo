@@ -26,7 +26,11 @@ Rails.application.routes.draw do
     resources :likes, only: [:create, :destroy]
   end
   
-  resources :friendrequests, only: [:create, :destroy]
-  post 'friendrequests/:id/accept', to: 'friendrequests#accept', as: 'friendrequests_accept'
-  resources :users, only: [:index, :show]
+  resources :friend_requests, only: [:create, :destroy]
+  post 'friend_requests/:id/accept', to: 'friend_requests#accept', as: 'friend_requests_accept'
+  resources :users, only: [:index, :show] do
+    member do
+      get 'friend_requests', to: 'users#friend_requests'
+    end
+  end
 end
