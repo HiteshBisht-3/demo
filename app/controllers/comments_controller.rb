@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
     @comment = @post.comments.new(comment_params)
     @comment.user = current_user
     if @comment.save
-      redirect_to @post
+      redirect_back(fallback_location: root_path)
     else
       redirect_to @post
     end

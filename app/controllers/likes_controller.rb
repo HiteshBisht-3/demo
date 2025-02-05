@@ -7,7 +7,7 @@ class LikesController < ApplicationController
     else
       @post.likes.create(user: current_user)
     end
-    redirect_to @post
+    redirect_back(fallback_location: root_path)
   end
 
   def destroy
