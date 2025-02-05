@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    sessions: "users/sessions",
+    registrations: "users/registrations"
   }
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -15,20 +15,18 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root to: "homes#index"
-
-  resources :profiles, only: [:show]
-  resources :searches, only: [:index]
+  resources :profiles, only: [ :show ]
+  resources :searches, only: [ :index ]
 
   resources :posts, except: :index do
-    resources :comments, only: [:create, :destroy]
-    resources :likes, only: [:create, :destroy]
+    resources :comments, only: [ :create, :destroy ]
+    resources :likes, only: [ :create, :destroy ]
   end
-  
   resources :friend_requests, only: [:create, :destroy]
-  post 'friend_requests/:id/accept', to: 'friend_requests#accept', as: 'friend_requests_accept'
-  resources :users, only: [:index, :show] do
+  post "friend_requests/:id/accept", to: "friend_requests#accept", as: "friend_requests_accept"
+  resources :users, only: [ :index, :show] do
     member do
-      get 'friend_requests', to: 'users#friend_requests'
+      get "friend_requests", to: "users#friend_requests"
     end
   end
 end

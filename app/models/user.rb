@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  after_create_commit :new_user_welcome
   has_one_attached :image
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
@@ -15,12 +16,10 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, on: :create
 
   def self.ransackable_attributes(auth_object = nil)
-    # Only allow specific, non-sensitive attributes to be searchable
-    [ "username", "email", "first_name", "last_name" ]
+    [ "username" ]
   end
 
-  # Optional: If you want to allow searching through associations
-  def self.ransackable_associations(auth_object = nil)
-    [ "posts", "comments" ] # Add any associations you want to be searchable
+  def new_user_welcome
+    UserMailer.with(user: self).welcome_email.deliver_now
   end
 end

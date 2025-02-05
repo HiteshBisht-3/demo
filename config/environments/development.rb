@@ -10,7 +10,7 @@ Rails.application.configure do
   config.eager_load = false
   
   # Show full error reports.
-  config.consider_all_requests_local = false
+  config.consider_all_requests_local = true
 
   # Enable server timing.
   config.server_timing = true
@@ -38,13 +38,23 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Set localhost to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "http"}
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "gmail.com",
+  user_name: "hiteshbisht43@gmail.com",
+  password: "yqur iqgq njzp jnlx",
+  authentication: "plain",
+  enable_starttls_auto: true
+  }
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true

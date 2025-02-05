@@ -11,7 +11,7 @@
   <% end %>
 
   <% if @users.any? %>
-    <h2 class="text-xl font-bold my-4">Results</h2>
+    <h2 class="text-xl font-bold my-4">Suggested Friends</h2>
     <ul class="list-none">
       <% @users.each do |user| %>
         <% if user.username.present? %>
