@@ -15,16 +15,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root to: "homes#index"
-  resources :profiles, only: [ :show ]
+  resources :profiles, only: [ :show ,  :update ]
   resources :searches, only: [ :index ]
 
   resources :posts, except: :index do
     resources :comments, only: [ :create, :destroy ]
     resources :likes, only: [ :create, :destroy ]
   end
-  resources :friend_requests, only: [:create, :destroy]
+  resources :friend_requests, only: [ :create, :destroy ]
   post "friend_requests/:id/accept", to: "friend_requests#accept", as: "friend_requests_accept"
-  resources :users, only: [ :index, :show] do
+  resources :users, only: [ :index, :show ] do
     member do
       get "friend_requests", to: "users#friend_requests"
     end

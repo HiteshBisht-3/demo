@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="flex items-center space-x-2">
-                      <% if current_user == comment.user %>
+                      <% if current_user == comment.user || @post.user %>
                         <%= link_to 'Delete', [comment.post, comment], 
                           class: "text-gray-400 hover:text-red-500",
                           method: :delete, 
