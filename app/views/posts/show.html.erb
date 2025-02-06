@@ -32,9 +32,18 @@
             <%end%>
           </div>
           <div class="relative aspect-square">
-            <%= image_tag @post.image, 
-                class: "w-full h-full object-cover",
-                alt: "Post image" if @post.image.attached?%>
+            <%if @post.file.attached? %>
+              <%if @post.file.image? %>
+                <%= image_tag @post.file, 
+                  class: "w-full h-full object-cover",
+                  alt: "Post image"%>
+                  <%elsif @post.file.video? %>
+                    <%= video_tag(url_for(@post.file), 
+                  class: "w-full h-full object-cover",
+                  alt: "Post video")%>
+                  
+                      <%end%>
+                  <%end%>
           </div>
 
           <div class="p-4 flex items-center space-x-4">

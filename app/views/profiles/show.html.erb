@@ -34,9 +34,13 @@
       <% @user.posts.each do |post| %>
         <div class="relative rounded-lg overflow-hidden shadow-lg">
           <%= link_to post_path(post) do %>
-          <%if post.image.attached?%>
-            <%= image_tag url_for(post.image), alt: post.caption, class: "w-full h-64 object-cover rounded-lg transition duration-300 transform hover:scale-105" %>
+          <%if post.file.attached? %>
+            <%if post.file.image?%>
+            <%= image_tag url_for(post.file), alt: post.caption, class: "w-full h-64 object-cover rounded-lg transition duration-300 transform hover:scale-105" %>
+            <%elsif post.file.video?%>
+              <%= video_tag url_for(post.file), alt: post.caption, class: "w-full h-64 object-cover rounded-lg transition duration-300 transform hover:scale-105" %>
           <% end %>
+          <%end%>
         <%end%>
         </div>
       <% end %>

@@ -26,15 +26,18 @@
         </div>
         <div class="space-y-8 p-4">
           <% user.posts.each do |post| %>
-            <div class="bg-white rounded-lg overflow-hidden shadow-md">
-              <% if post.image.attached? %>
-                <div class="relative aspect-w-16 aspect-h-12 bg-gray-100">
-                  <%= image_tag url_for(post.image),
-                      class: "w-full h-full object-cover transition-transform duration-300 hover:scale-105",
-                      loading: "lazy",
-                      alt: "Post by #{user.username}" %>
-                </div>
-              <% end %>
+            <div class="bg-white rounded-lg overflow-hidden shadow-md"></div>
+            <%if post.file.attached? %>
+              <% if post.file.image? %>
+                  <%= image_tag post.file, 
+                  class: "w-full h-full object-cover",
+                  alt: "Post by #{user.username}"%>
+                <%elsif post.file.video? %>
+                    <%= video_tag(url_for(post.file), 
+                  class: "w-full h-full object-cover",
+                  alt: "Post video")%>
+                <%end%>
+              <%end%>
               <div class="p-6">
                 <h4 class="text-xl font-medium text-gray-900 mb-3"><strong>caption: &nbsp</strong><%= post.caption %></h4>
                 <p class="text-sm text-gray-500 mb-6 flex items-center">
