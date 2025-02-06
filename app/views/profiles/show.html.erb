@@ -26,17 +26,18 @@
   </div>
 
   <div class="mt-6">
-    <h2 class="text-sm text-gray-500"><%= @user.posts.count %> Posts</h2>
+    <h1 class="text-sm text-gray-500"><%= @user.posts.count %> Posts</h1>
   </div>
-
   <div class="mt-6">
     <h3 class="text-lg font-semibold text-gray-800 mb-4">Posts</h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <% @user.posts.each do |post| %>
         <div class="relative rounded-lg overflow-hidden shadow-lg">
           <%= link_to post_path(post) do %>
-            <%= image_tag post.image, alt: post.caption, class: "w-full h-64 object-cover rounded-lg transition duration-300 transform hover:scale-105" %>
+          <%if post.image.attached?%>
+            <%= image_tag url_for(post.image), alt: post.caption, class: "w-full h-64 object-cover rounded-lg transition duration-300 transform hover:scale-105" %>
           <% end %>
+        <%end%>
         </div>
       <% end %>
     </div>
