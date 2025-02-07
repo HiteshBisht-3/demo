@@ -4,7 +4,6 @@ class CreatePosts < ActiveRecord::Migration[8.0]
       t.references :user
       t.string :caption
       t.string :image
-
       t.timestamps
     end
   end
