@@ -10,7 +10,14 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    super
+    self.resource = User.find_for_database_authentication(login: params[:user][:login])
+
+    if resource&.valid_password?(params[:user][:password])
+      sign_in(:user, resource)
+      render json: { message: "Signed in successfully" }, status: :ok
+    else
+      render json: { error: "Invalid login credentials" }, status: :unauthorized
+    end
   end
 
   # DELETE /resource/sign_out

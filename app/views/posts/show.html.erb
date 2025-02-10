@@ -31,21 +31,22 @@
             <%= link_to 'Delete Post', @post, class: "px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-blue-600 transition-colors", method: :delete, data: {turbo_method: :delete} %>
             <%end%>
           </div>
-          <div class="relative aspect-square">
-            <%if @post.file.attached? %>
-              <%if @post.file.image? %>
-                <%= image_tag @post.file, 
-                  class: "w-full h-full object-cover",
-                  alt: "Post image"%>
-                  <%elsif @post.file.video? %>
-                    <%= video_tag(url_for(@post.file), 
-                  class: "w-full h-full object-cover",
-                  alt: "Post video")%>
-                  
-                      <%end%>
-                  <%end%>
+          <div class="relative w-full bg-white overflow-hidden" style="max-width: 600px; margin: 0 auto;">
+            <div class="relative aspect-square bg-gray-100">
+              <% if @post.file.attached? %>
+                <% if @post.file.image? %>
+                  <%= image_tag @post.file,
+                      class: "absolute inset-0 w-full h-full object-cover",
+                      alt: "Post image" %>
+                <% elsif @post.file.video? %>
+                  <%= video_tag url_for(@post.file),
+                      class: "absolute inset-0 w-full h-full object-cover",
+                      controls: true,
+                      alt: "Post video" %>
+                <% end %>
+              <% end %>
+            </div>
           </div>
-
           <div class="p-4 flex items-center space-x-4">
               <%= form_with url: post_likes_path(@post), method: :post do %>
                 <button type="submit" class="text-gray-400 hover:text-red-500">
