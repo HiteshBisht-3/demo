@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Instagram " %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+<% if user_signed_in? %>
+<body class="bg-gray-100">
+  <nav class="bg-gray-900 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <%= link_to 'Instagram', root_path, class: "text-xl font-bold" %>
+      <div class="flex space-x-4">
+          <a href="/" class="hover:text-gray-300">Home</a>
+          <a href="<%= friend_requests_user_path(current_user.id) %>" class="hover:text-gray-300">Friends</a>
+          <a href="<%= profile_path(current_user.id) %>" class="hover:text-gray-300">Profile</a>
+          <a href="<%= user_path(current_user.id) %>" class="hover:text-gray-300">Search</a>
+          <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'hover:text-gray-300' %>
+        <%end%>
+      </div>
+    </div>
+  </nav>
+  <%= yield %>
+</body>
+

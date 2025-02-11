@@ -1,0 +1,52 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Search Users</h1>
+
+  <%= search_form_for @q, url: user_path(@user), method: :get do |f| %>
+    <div class="flex">
+      <%= f.search_field :username_cont, placeholder: "Search users",
+          class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      <%= f.submit "Search",
+          class: "ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" %>
+    </div>
+  <% end %>
+
+  <% if @users.any? %>
+    <h2 class="text-xl font-bold my-4">Suggested Friends</h2>
+    <ul class="list-none">
+      <% @users.each do |user| %>
+        <% next if user == current_user %>
+        
+        <li class="bg-gray-100 p-2 rounded mb-2 flex justify-between items-center">
+          <strong> <%= link_to user.username, profile_path(user) %> </strong>
+
+          <% existing_request = FriendRequest.find_by(sender: current_user, receiver: user) ||
+                                FriendRequest.find_by(sender: user, receiver: current_user) %>
+
+          <% if existing_request.nil? %>
+            <%= form_with url: friend_requests_path, method: :post, local: true do |f| %>
+              <%= f.hidden_field :receiver_id, value: user.id %>  
+              <%= f.submit "Send Request",
+                  class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" %>
+            <% end %>
+
+          <% elsif existing_request.pending? && existing_request.receiver == current_user %>
+            <div class="flex gap-2">
+              <%= button_to "Accept", friend_requests_accept_path(existing_request), method: :patch,
+                  class: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700" %>
+              <%= button_to "Reject", friend_request_path(existing_request), method: :delete,
+                  class: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700" %>
+            </div>
+
+          <% elsif existing_request.pending? %>
+            <span class="px-4 py-2 bg-gray-500 text-white rounded-md">Request Sent</span>
+
+          <% elsif existing_request.accepted? %>
+            <span class="px-4 py-2 bg-green-500 text-white rounded-md">Friends</span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500">No results found.</p>
+  <% end %>
+</div>

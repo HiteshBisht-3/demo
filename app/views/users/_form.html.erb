@@ -1,0 +1,6 @@
+<%= form_with(url: searches_path, method: :get, local: true) do |form| %>
+  <div class="flex items-center">
+    <%= form.text_field :query, placeholder: "Enter username", class: "border border-gray-300 rounded-l p-2 w-full", value: params[:query] %>
+    <%= form.submit "Search", class: "bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600" %>
+  </div>
+<% end %>

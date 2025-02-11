@@ -1,0 +1,27 @@
+<div class="max-w-md mx-auto mt-10">
+  <h2 class="text-2xl font-semibold mb-4">Sign in</h2>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "bg-black text-white p-6 rounded-lg shadow-md") do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="mb-4">
+      <%= f.label :login, class: "block text-gray-400 font-bold mb-2" %>
+      <%= f.text_field :login, autofocus: true, autocomplete: "email", class: "w-full px-3 py-2 border rounded-lg  border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+    <div class="mb-4">
+      <%= f.label :password, class: "block text-gray-400 font-bold mb-2" %>
+      <% if @minimum_password_length %>
+      <em class="text-sm text-gray-400">(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-3 py-2 border rounded-lg  border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-6">
+      <%= f.submit "Sign in", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" %>
+    </div>
+  <% end %>
+
+  <div class="text-center mt-4">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>
