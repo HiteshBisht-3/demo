@@ -34,7 +34,7 @@ class User < ApplicationRecord
   end
 
   def new_user_welcome
-    UserMailer.with(user: self).welcome_email.deliver_now
+    SendEmailsJob.perform_now(self)
   end
 
   def self.pick_random

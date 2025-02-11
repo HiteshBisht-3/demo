@@ -41,7 +41,10 @@
             <span class="px-4 py-2 bg-gray-500 text-white rounded-md">Request Sent</span>
 
           <% elsif existing_request.accepted? %>
-            <span class="px-4 py-2 bg-green-500 text-white rounded-md">Friends</span>
+            <%= form_with url: friend_request_path(existing_request), method: :delete, local: true do |f| %>
+              <%= f.submit "Unfriend",
+                  class: "px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700" %>
+            <% end %>
           <% end %>
         </li>
       <% end %>

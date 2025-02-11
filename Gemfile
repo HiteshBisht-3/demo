@@ -55,7 +55,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   gem "rspec-rails"
-  gem "factory_bot_rails"
+  gem "factory_bot"
   gem "faker"
   gem "simplecov"
   gem "letter_opener"
