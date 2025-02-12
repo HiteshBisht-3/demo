@@ -2,14 +2,16 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
-    def index
-      friends = current_user.friends
-      if friends.any?
-        @posts = Post.where(user_id: friends.pluck(:id)).order(created_at: :desc)
-      else
-        @posts = Post.order("RANDOM()").limit(10)
-      end
+  def index
+    friends = current_user.friends
+
+    if friends.any?
+      @posts = Post.where(user_id: friends.pluck(:id)).order(created_at: :desc)
+    else
+      @posts = Post.order("RANDOM()").limit(10)
+      flash.now[:alert] = "You are not allowed to view posts unless you have friends. Showing random posts instead."
     end
+  end
 
   def show
     @comments = @post.comments

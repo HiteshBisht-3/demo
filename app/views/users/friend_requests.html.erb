@@ -1,5 +1,6 @@
 <div class="container mx-auto p-6">
   <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Friend Requests</h2>
+
   <% if @received_requests.any? %>
     <div class="max-w-2xl mx-auto mb-8">
       <h3 class="text-2xl font-semibold text-gray-700 mb-4">Received Friend Requests</h3>
@@ -7,7 +8,7 @@
         <div class="bg-white shadow-md rounded-lg p-4 mb-4 flex justify-between items-center">
           <div class="flex items-center">
             <div class="mr-4 font-semibold text-lg text-gray-700">
-              <%= request.sender.username %>
+              <%= link_to request.sender.username, profile_path(request.sender), class: "text-blue-600 hover:underline" %>
             </div>
           </div>
           <div class="flex space-x-2">
@@ -22,6 +23,7 @@
   <% else %>
     <p class="text-center text-gray-500">No friend requests at the moment.</p>
   <% end %>
+
   <% if @receive_friends.any? %>
     <div class="max-w-2xl mx-auto mb-8">
       <h3 class="text-2xl font-semibold text-gray-700 mb-4">Friends</h3>
@@ -29,27 +31,26 @@
         <div class="bg-white shadow-md rounded-lg p-4 mb-4 flex justify-between items-center">
           <div class="flex items-center">
             <div class="mr-4 font-semibold text-lg text-gray-700">
-              <%= friend.sender.username %>
+              <%= link_to friend.sender.username, profile_path(friend.sender), class: "text-blue-600 hover:underline" %>
             </div>
           </div>
         </div>
       <% end %>
     </div>
-  <% elsif @send_friends.any?%>
-  <div class="max-w-2xl mx-auto mb-8">
+  <% elsif @send_friends.any? %>
+    <div class="max-w-2xl mx-auto mb-8">
       <h3 class="text-2xl font-semibold text-gray-700 mb-4">Friends</h3>
       <% @send_friends.each do |friend| %>
         <div class="bg-white shadow-md rounded-lg p-4 mb-4 flex justify-between items-center">
           <div class="flex items-center">
             <div class="mr-4 font-semibold text-lg text-gray-700">
-              <%= friend.receiver.username %>
+              <%= link_to friend.receiver.username, profile_path(friend.receiver), class: "text-blue-600 hover:underline" %>
             </div>
           </div>
         </div>
       <% end %>
     </div>
-  <%else%>
-
+  <% else %>
     <p class="text-center text-gray-500">You have no accepted friends yet.</p>
   <% end %>
 </div>
