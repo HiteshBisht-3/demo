@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Instagram " %></title>
+    <title><%= content_for(:title) || "Auragram " %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -27,7 +27,7 @@
 <body class="bg-gray-100">
   <nav class="bg-gray-900 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
-      <%= link_to 'Instagram', root_path, class: "text-xl font-bold" %>
+      <%= link_to 'Auragram', root_path, class: "text-xl font-bold" %>
       <div class="flex space-x-4">
           <a href="/" class="hover:text-gray-300">Home</a>
           <a href="<%= friend_requests_user_path(current_user.id) %>" class="hover:text-gray-300">Friends</a>

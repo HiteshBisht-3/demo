@@ -13,12 +13,14 @@ RSpec.describe Post, type: :model do
     it { should have_one_attached(:file) }
   end
 
-  describe 'like_count method' do
+  describe '#like_count' do
+    let(:user) { create(:user) }
+    let(:post) { create(:post, user: user) }
+
     it 'returns the correct like count' do
-      post = create(:post)
-      create(:like, post: post)
-      create(:like, post: post)
-      expect(post.like_count).to eq(2)
+      create_list(:like, 5, post: post)
+      expect(post.like_count).to eq(5)
     end
+
   end
 end

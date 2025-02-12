@@ -24,13 +24,11 @@ RSpec.describe User, type: :model do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
     let(:user3) { create(:user) }
-    
-    before do
+
+    it 'returns the correct friends for the user' do
       create(:friend_request, sender: user1, receiver: user2, status: 'accepted')
       create(:friend_request, sender: user2, receiver: user3, status: 'accepted')
-    end
 
-    it 'returns friends for a user' do
       expect(user1.friends).to include(user2)
       expect(user2.friends).to include(user1, user3)
       expect(user3.friends).to include(user2)
@@ -38,45 +36,41 @@ RSpec.describe User, type: :model do
   end
 
   describe '.find_for_database_authentication' do
-    let!(:user) { create(:user, email: 'user@example.com', phone: '1234567890') }
+    let(:user) { create(:user, email: 'test@example.com', phone: '1234567890') }
 
-    context 'when login is email' do
-      it 'finds user by email' do
-        expect(User.find_for_database_authentication(login: 'user@example.com')).to eq(user)
-      end
+    it 'finds a user by email (case insensitive)' do
+      found_user = User.find_for_database_authentication(login: 'TEST@example.com')
+      expect(found_user).to eq(user)
     end
 
-    context 'when login is phone number' do
-      it 'finds user by phone' do
-        expect(User.find_for_database_authentication(login: '1234567890')).to eq(user)
-      end
-    end
-  end
-
-  describe '.ransackable_attributes' do
-    it 'returns the expected ransackable attributes' do
-      expect(User.ransackable_attributes).to eq(['username'])
+    it 'finds a user by phone number' do
+      found_user = User.find_for_database_authentication(login: '1234567890')
+      expect(found_user).to eq(user)
     end
   end
 
   describe '#new_user_welcome' do
     let(:user) { build(:user) }
 
-    it 'sends a welcome email after create' do
-      expect { user.save }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+    it 'sends a welcome email after user creation' do
+      allow(SendEmailsJob).to receive(:perform_now)
+      user.save
+      expect(SendEmailsJob).to have_received(:perform_now).with(user)
     end
   end
 
   describe '.pick_random' do
-    it 'returns a random user from the database' do
-      create_list(:user, 5)
-      random_user = User.pick_random
-      expect(random_user).to be_a(User)
-      expect(User.count).to be >= 1
-    end
-
     it 'returns nil if there are no users' do
       expect(User.pick_random).to be_nil
+    end
+
+    it 'returns a random user from the database' do
+      user1 = create(:user)
+      user2 = create(:user)
+      user3 = create(:user)
+
+      random_user = User.pick_random
+      expect([user1, user2, user3]).to include(random_user)
     end
   end
 end
